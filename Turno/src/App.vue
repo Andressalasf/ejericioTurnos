@@ -1,78 +1,74 @@
 <script setup>
-import { ref } from 'vue'
 
-let inputPutin = ref('')
-let onixan = ref(0)
-let totalTurnos = ref(0)
-let codigos1 = ref([
-  [],
-  [],[]
-])
+import MensajesDirectos from '@/components/MensajesDirectos.vue';
+import { ref } from 'vue';
 
-function addCode(onixan) {
-  codigos1.value[onixan].push(inputPutin.value)
-  getTotalTurnos()
-}
 
-function getTotalTurnos() {
- 
-  totalTurnos.value = codigos1.value.reduce((total, modulo) => total + modulo.length, 0)
+const mensajes = ref([{ id: 0, nombre:'hector', mensaje: 'hola como estas. Te amo'}, {id: 1, nombre:'diana', mensaje: 'hijo de puta'}, {id: 2, nombre:'juliana', mensaje: 'sapo hpta'}])
 
+const mensajeSeleccionado = ref()
+const nombreSeleccionado= ref()
+function ShowMensaje(id){
+
+  const mensaje = mensajes.value.find(m => m.id === id);
+
+  const nombre = mensajes.value.find(m => m.id === id);
+
+  nombreSeleccionado.value = nombre ? nombre.nombre : null;
+
+
+  mensajeSeleccionado.value = mensaje ? mensaje.mensaje : null;
   
+
+
 }
 
 </script>
 
 <template>
-  <div class="max-w-xl container">
-    <div class="text-center text-xl font-bold">SISTEMA DE TURNOS</div>
+ 
+ 
+  <div class=" w-full bg-gray-800 h-screen flex">
+    
+      <div  class=" bg-gray-700 w-1/12">
+        perfil
+      </div>
+      <div class=" text-center flex flex-col justify-evenly w-1/6 bg-gray-900">
+          <div><h3 class=" text-white">Tendencias</h3></div>
+          <div>
+            
+            <h3 class=" text-white">Mensajes directos</h3>
+            
+            <MensajesDirectos class="" v-for="(mensaje, index) in mensajes" :key="index" :id="mensaje.id"  :nombre="mensaje.nombre"  :mensaje="mensaje.mensaje" @ShowMensaje="ShowMensaje(mensaje.id)">
 
-    <div class="flex justify-between mt-8 mx-auto">
-      <div>
-        <div class="bg-blue-400 p-2 rounded-md text-white w-40 text-center mb-1">MODULO 1</div>
-        <div class="bg-gray-300 rounded-md p-2">
-          <div v-for="(obj, index) in codigos1[0]" :key="index">
-            {{ obj }}
+            </MensajesDirectos>
+          
           </div>
-        </div>
       </div>
 
-      <div>
-        <div class="bg-green-500 p-2 rounded-md text-white w-40 text-center">MODULO 2</div>
-        <div class="bg-gray-300 rounded-md p-2 mt-1">
-          <div v-for="(obj, index) in codigos1[1]" :key="index">{{ obj }}</div>
+      <div class=" bg-gray-600 w-2/5">
+
+        <div class=" w-4/5 my-0 mx-auto">
+             <h1 class=" text-2xl font-semibold">{{ nombreSeleccionado }}</h1>
+
+            <div class=" p-6 relative W-3/5 bg-gray-500 mt-6">
+              <p >{{mensajeSeleccionado}}</p>
+
+                
+              <span class=" text-xs absolute bottom-0 right-0 p-2 mt-5 ">25/06/2023 10:55am </span>
+                
+            </div>
+
         </div>
+       
       </div>
-  
-    <div>
-      <div class="bg-orange-500 p-2 rounded-md text-white w-40 text-center">MODULO 3</div>
-      <div class="bg-gray-300 rounded-md p-2 mt-1">
-        <div v-for="(obj, index) in codigos1[2]" :key="index">
-          {{ obj }}
-        </div>
+
+      <div class=" text-center  W-100%">
+
+        <h2>PUBLICIDAD</h2>
+
       </div>
-    </div>
-    </div>
+
   </div>
 
-  <div class="bg-gray-300 rounded-lg max-w-xl mt-2 flex justify-between p-4">
-    <div><h1 class="text-xl font-bold">{{ totalTurnos }} turnos</h1></div>
-    <div>
-      <input
-        v-model="inputPutin"
-        class="w-28 rounded-md h-7 p-2"
-        type="text"
-        placeholder="CODIGO"
-      />
-    </div>
-
-    <div>
-
-      <div> <input v-model="onixan" class="rounded-md w-32 h-6 p-1" type="number" placeholder="Ingresa modulo"></div>
-
-    </div>
-    <div @click="addCode(onixan)" @dblclick="totalTurnos()" class="bg-violet-600 text-white rounded-md w-32 h-10 p-2 text-center">
-      Agregar turno
-    </div>
-  </div>
 </template>
